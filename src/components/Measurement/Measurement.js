@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
+import seedMeasurements from '../../seeds/measurements';
 // import axios from 'axios';
 import api from '../../api';
 import { makeBG } from './BG';
@@ -6,13 +7,13 @@ import { makeBP } from './BP';
 import { getPatientRecord, getPatientObservations } from '../../utils/fhirExtract';
 
 const Measurement = ({ store, loading, client, dispatch, encounter }) => {
-  const [measurements, setMeasurements] = useState([]);
+  const [measurements, setMeasurements] = useState(seedMeasurements);
   const { patient, user } = store;
 
   useEffect(() => {
-    api.getAllMeasurements().then((res) => {  
-      setMeasurements(res.data.data)
-    })
+    // api.getAllMeasurements().then((res) => {  
+    //   setMeasurements(res.data.data)
+    // })
     // .then(() => {
     //   getSetUser(patient);
     // })

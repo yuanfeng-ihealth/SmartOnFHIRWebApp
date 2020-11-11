@@ -108,7 +108,7 @@ const duration = period => {
 class PatientVisualizer extends React.Component {
   state = {
     edit: false,
-    enroll: null,
+    enroll: false,
     patient: this.props.patient
   }
 
@@ -132,22 +132,24 @@ class PatientVisualizer extends React.Component {
   }
 
   enrollUser = async (patient) => {
-    const user = {
-      firstName: patient.name.find(n => n.use === 'official').given[0],
-      lastName: patient.name.find(n => n.use === 'official').family,
-      ehr_id: patient.id,
-      birthDate: patient.birthDate,
-      telephone: patient.telecome ? patient.telecom[0] : "999-999-9999"
-    }
-    api.createUser(user).then((res) => {
-      this.setState({enroll: true});
-      this.props.dispatch({type: 'updateEnroll', enroll: true});
-      this.props.dispatch({type: 'updateUser', user});
-    })
+    // const user = {
+    //   firstName: patient.name.find(n => n.use === 'official').given[0],
+    //   lastName: patient.name.find(n => n.use === 'official').family,
+    //   ehr_id: patient.id,
+    //   birthDate: patient.birthDate,
+    //   telephone: patient.telecome ? patient.telecom[0] : "999-999-9999"
+    // }
+    // api.createUser(user).then((res) => {
+    //   this.setState({enroll: true});
+    //   this.props.dispatch({type: 'updateEnroll', enroll: true});
+    //   this.props.dispatch({type: 'updateUser', user});
+    // })
+    this.setState({enroll: true});
+    this.props.dispatch({type: 'updateEnroll', enroll: true})
   }
   
   componentDidMount(){
-    this.getUser(this.props.patient);
+    // this.getUser(this.props.patient);
   }
 
   render() {

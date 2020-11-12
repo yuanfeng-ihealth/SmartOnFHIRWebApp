@@ -21,7 +21,6 @@ export default class Launcher extends React.Component {
      */
     componentDidMount() {
         const launchOptions = getLaunchOptions(window);
-        debugger
         SMART.authorize({
             clientId: launchOptions.clientId,
             scope: launchOptions.scope,

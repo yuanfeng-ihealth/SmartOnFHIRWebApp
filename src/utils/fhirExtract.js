@@ -98,6 +98,9 @@ function getEverythingManually(client, supportedResources) {
     if (resource[0] === 'Condition') {
       url = url + '&category=encounter-diagnosis'
     }
+    if (resource[0] === 'DocumentReference') {
+      return
+    }
     const request = client
       .request(url, { flat: true, pageLimit: 0 })
       .then(result => {

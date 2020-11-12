@@ -1,10 +1,12 @@
-import React, { FC, useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import seedMeasurements from '../../seeds/measurements';
+import moment from 'moment';
 // import axios from 'axios';
-import api from '../../api';
-import { makeBG } from './BG';
-import { makeBP } from './BP';
-import { getPatientRecord, getPatientObservations } from '../../utils/fhirExtract';
+// import api from '../../api';
+import { makeBG, makeBP } from '../../utils/helper';
+import { getPatientObservations } from '../../utils/fhirExtract';
+import { Table } from 'antd';
+const { Column, ColumnGroup } = Table;
 
 const Measurement = ({ store, loading, client, dispatch, encounter }) => {
   const [measurements, setMeasurements] = useState(seedMeasurements);
@@ -82,6 +84,238 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
     }
     return bool ? <div style={{...style.font, ...style.button}} onClick={() => migrate(bp)}>Send to EHR</div> : null
   }
+
+  const renderBGSchedule = () => {
+    return <Table dataSource={measurements.filter((m) => m.type === "Blood Glucose")} pagination={false}>
+      <Column
+        title="Date"
+        dataIndex="date"
+        key='date'
+        // sorter={(a,b)=>a.date-b.date}
+        render={(data)=>moment(data).format('MM/DD/YYYY')}
+        width={'12%'}
+      />
+      <Column
+        title="BG Level"
+        // dataIndex="reading"
+        key='reading'
+        // sorter={(a,b)=>a.date-b.date}
+        render={(data)=>console.log(data)}
+        width={'12%'}
+      />
+    </Table>
+  //   return  <div className='IH-SearchTable' style={{border:'unset'}}>
+  //       <Table dataSource={parsedData} rowKey={(data,index)=>data.date+index}
+  //              className='logBookTable' bordered
+  //              scroll={{ y: 305 }}
+  //              style={{ borderTop:'solid 1px #e9e9e9',margin:20,marginBottom:0}}
+  //              pagination={false}
+  //              loading={{spinning: loading, indicator: <IHLoading/>}}
+  //       >
+  //                 <Column
+  //                     title="Date"
+  //                     dataIndex="date"
+  //                     // key='date'
+  //                     sorter={(a,b)=>a.date-b.date}
+  //                     render={(data)=>moment(data).format('MM/DD/YYYY')}
+  //                     width={'12%'}
+  //                 />
+  //           <Column
+  //               title=""
+  //               dataIndex="data.OVERNIGHT"
+  //               key='overnight'
+  //               width='11%'
+  //               className='overnight logBookIcon'
+  //               render={(data, index) => {
+  //                   const { readingCount,className,mgdlValue,unit } = this.handleData(data||[]);
+  //                   return {
+  //                       props: {
+  //                           className:'number',
+  //                           data:readingCount
+
+  //                       },
+  //                       children: <div data={readingCount} className={className}>
+  //                                   <div>
+  //                                       <span>{ mgdlValue }</span>
+  //                                   </div>
+  //                               </div>
+  //                   }
+  //               }
+  //               }
+  //           />
+  //                 <ColumnGroup title="Breakfast">
+  //                     <Column
+  //                         title="B"
+  //                         key='beforeBreakfast'
+  //                         width='11%'
+  //                         dataIndex="data.BREAKFAST"
+  //                         render={(data, index) => {
+  //                             const filteredList = _.filter(data,(d)=>d.beforeMeal);
+  //                             const { readingCount,className,mgdlValue,unit } = this.handleData(filteredList);
+  //                             return {
+  //                                 props: {
+  //                                     className:'number',
+  //                                     data:readingCount
+  //                                 },
+  //                                 children: <div data={readingCount} className={className}>
+  //                                             <div>
+  //                                                 <span>{ mgdlValue }</span>
+  //                                             </div>
+  //                                           </div>
+  //                             }
+  //                           }
+  //                         }
+  //                     />
+  //                     <Column
+  //                         title="A"
+  //                         dataIndex="data.BREAKFAST"
+  //                         key='afterBreakfast'
+  //                         width='11%'
+  //                         render={(data, index) => {
+  //                             const filteredList = _.filter(data,(d)=>!d.beforeMeal);
+  //                             const { readingCount,className,mgdlValue,unit } = this.handleData(filteredList);
+  //                             return {
+  //                                 props: {
+  //                                     className:'number',
+  //                                     data:readingCount
+
+  //                                 },
+  //                                 children: <div data={readingCount} className={className}>
+  //                                             <div>
+  //                                                 <span>{ mgdlValue }</span>
+  //                                             </div>
+  //                                           </div>
+  //                             }
+  //                            }
+  //                         }
+  //                     />
+  //                 </ColumnGroup>
+  //                 <ColumnGroup title="Lunch">
+  //                     <Column
+  //                         title="B"
+  //                         width='11%'
+  //                         dataIndex="data.LUNCH"
+  //                         key='beforeLunch'
+  //                         render={(data, index) => {
+  //                             const filteredList = _.filter(data,(d)=>d.beforeMeal);
+  //                             const { readingCount,className,mgdlValue,unit } = this.handleData(filteredList);
+
+  //                             return {
+  //                                 props: {
+  //                                     className:'number',
+  //                                     data:readingCount
+
+  //                                 },
+  //                                 children: <div data={readingCount} className={className}>
+  //                                             <div>
+  //                                                 <span>{ mgdlValue }</span>
+  //                                             </div>
+  //                                           </div>
+  //                             }
+  //                         }
+  //                         }
+  //                     />
+  //                     <Column
+  //                         title="A"
+  //                         dataIndex="data.LUNCH"
+  //                         key='afterLunch'
+  //                         width='11%'
+  //                         render={(data, index) => {
+  //                             const filteredList = _.filter(data,(d)=>!d.beforeMeal);
+  //                             const { readingCount,className,mgdlValue,unit } = this.handleData(filteredList);
+
+  //                             return {
+  //                                 props: {
+  //                                     className:'number',
+  //                                     data:readingCount
+
+  //                                 },
+  //                                 children: <div data={readingCount} className={className}>
+  //                                             <div>
+  //                                                 <span>{ mgdlValue }</span>
+  //                                             </div>
+  //                                           </div>
+  //                             }
+  //                         }
+  //                         }
+  //                     />
+  //                 </ColumnGroup>
+  //                 <ColumnGroup title="Dinner">
+  //                     <Column
+  //                         title="B"
+  //                         dataIndex="data.DINNER"
+  //                         width='11%'
+  //                         key='beforeDinner'
+  //                         render={(data, index) => {
+  //                             const filteredList = _.filter(data,(d)=>d.beforeMeal);
+  //                             const { readingCount,className,mgdlValue,unit } = this.handleData(filteredList);
+
+  //                             return {
+  //                                 props: {
+  //                                     className:'number',
+  //                                     data:readingCount
+
+  //                                 },
+  //                                 children: <div data={readingCount} className={className}>
+  //                                             <div>
+  //                                                 <span>{ mgdlValue }</span>
+  //                                             </div>
+  //                                           </div>
+  //                             }
+  //                         }
+  //                         }
+  //                     />
+  //                     <Column
+  //                         title="A"
+  //                         dataIndex="data.DINNER"
+  //                         key='afterDinner'
+  //                         width='11%'
+  //                         render={(data, index) => {
+  //                             const filteredList = _.filter(data,(d)=>!d.beforeMeal);
+  //                             const { readingCount,className,mgdlValue,unit } = this.handleData(filteredList);
+
+  //                             return {
+  //                                 props: {
+  //                                     className:'number',
+  //                                     data:readingCount
+
+  //                                 },
+  //                                 children: <div data={readingCount} className={className}>
+  //                                             <div>
+  //                                                 <span>{ mgdlValue }</span>
+  //                                             </div>
+  //                                          </div>
+  //                             }
+  //                         }
+  //                         }
+  //                     />
+  //                 </ColumnGroup>
+  //                 <Column
+  //                     title=""
+  //                     dataIndex="data.BEDTIME"
+  //                     key='bedtime'
+  //                     className='bedtime logBookIcon'
+  //                     width='11%'
+  //                     render={(data, index) => {
+  //                         const { readingCount,className,mgdlValue,unit } = this.handleData(data||[]);
+  //                         return {
+  //                             props: {
+  //                                 className:'number',
+  //                                 data:readingCount
+
+  //                             },
+  //                             children: <div data={readingCount} className={className}>
+  //                                         <div>
+  //                                             <span>{ mgdlValue }</span>
+  //                                         </div>
+  //                                      </div>
+  //                         }
+  //                     }
+  //                     }
+  //                 />
+  //             </Table>
+  //           </div>
+  }
   
   return loading ? <div>loading</div> : (
     store.enroll === true ?
@@ -95,13 +329,14 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
             <th>Date</th>
           </tr>
           {measurements.filter((m) => m.type === 'Blood Glucose').map((bg, i) => 
-            <tr key={i}>
+            <tr key={'bg' + i}>
               <td>{bg.reading.value + " " + bg.reading.unit}</td>
               <td>{bg.date}</td>
             </tr>
           )}
           </tbody>
         </table>
+        {renderBGSchedule()}
         <div style={{...style.sectionHeader, marginTop: '40px'}}>Blood Pressure Summary</div>
         <table style={{width: '100%'}}>
           <tbody>
@@ -111,7 +346,7 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
               <th>Date</th>
             </tr>
             {measurements.filter((m) => m.type === 'Blood Pressure').map((bp, i) => 
-              <tr key={i}>
+              <tr key={'bp' + i}>
                 <td>{bp.reading.systolic.value} {bp.reading.systolic.unit}</td>
                 <td>{bp.reading.diastolic.value} {bp.reading.diastolic.unit}</td>
                 <td>{bp.date}</td>

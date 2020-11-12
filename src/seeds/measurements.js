@@ -5,7 +5,19 @@ const Measurements = [
      value: 2.1,
      unit: "mmol/L"
    },
-   date: "2019-10-19T23:00:00Z"
+   date: "2020-11-01T23:00:00Z",
+   meal: "breakfast",
+   time: "before"
+ },
+  {
+   type: "Blood Glucose",
+   reading: {
+     value: 2.1,
+     unit: "mmol/L"
+   },
+   date: "2020-11-01T23:00:00Z",
+   meal: "breakfast",
+   time: "after"
  },
  {
    type: "Blood Glucose",
@@ -13,7 +25,19 @@ const Measurements = [
      value: 2.3,
      unit: "mmol/L"
    },
-   date: "2019-11-19T23:00:00Z"
+   date: "2020-11-02T23:00:00Z",
+   meal: "Lunch",
+   time: "before"
+ },
+ {
+   type: "Blood Glucose",
+   reading: {
+     value: 2.3,
+     unit: "mmol/L"
+   },
+   date: "2020-11-02T23:00:00Z",
+   meal: "Lunch",
+   time: "after"
  },
  {
    type: "Blood Glucose",
@@ -21,7 +45,19 @@ const Measurements = [
      value: 2.4,
      unit: "mmol/L"
    },
-   date: "2019-12-19T23:00:00Z"
+   date: "2020-11-04T23:00:00Z",
+   meal: "dinner",
+   time: "before"
+ },
+ {
+   type: "Blood Glucose",
+   reading: {
+     value: 2.4,
+     unit: "mmol/L"
+   },
+   date: "2020-11-04T23:00:00Z",
+   meal: "dinner",
+   time: "after"
  },
  {
    type: "Blood Glucose",
@@ -29,7 +65,8 @@ const Measurements = [
      value: 2.3,
      unit: "mmol/L"
    },
-   date: "2019-12-21T23:00:00Z"
+   date: "2020-11-05T23:00:00Z",
+   meal: "bedtime"
  },
  {
    type: "Blood Glucose",
@@ -37,7 +74,8 @@ const Measurements = [
      value: 2.5,
      unit: "mmol/L"
    },
-   date: "2019-12-25T23:00:00Z"
+   date: "2020-11-06T23:00:00Z",
+   meal: "overnight"
  },
  {
     type: "Blood Pressure",
@@ -51,7 +89,7 @@ const Measurements = [
         unit: "mmHg"
       }
     },
-    date: "2019-10-19T23:00:00Z"
+    date: "2020-11-01T23:00:00Z"
   },
   {
     type: "Blood Pressure",
@@ -65,7 +103,7 @@ const Measurements = [
         unit: "mmHg"
       }
     },
-    date: "2019-11-19T23:00:00Z"
+    date: "2020-11-02T23:00:00Z"
   },
   {
     type: "Blood Pressure",
@@ -79,7 +117,7 @@ const Measurements = [
         unit: "mmHg"
       }
     },
-    date: "2019-12-19T23:00:00Z"
+    date: "2020-11-04T23:00:00Z"
   },
   {
     type: "Blood Pressure",
@@ -93,7 +131,7 @@ const Measurements = [
         unit: "mmHg"
       }
     },
-    date: "2019-12-21T23:00:00Z"
+    date: "2020-11-05T23:00:00Z"
   },
   {
     type: "Blood Pressure",
@@ -107,7 +145,7 @@ const Measurements = [
         unit: "mmHg"
       }
     },
-    date: "2019-12-25T23:00:00Z"
+    date: "2020-11-06T23:00:00Z"
   }
 ]
 

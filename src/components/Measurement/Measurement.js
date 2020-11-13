@@ -336,7 +336,7 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
           )}
           </tbody>
         </table>
-        {renderBGSchedule()}
+        {/* {renderBGSchedule()} */}
         <div style={{...style.sectionHeader, marginTop: '40px'}}>Blood Pressure Summary</div>
         <table style={{width: '100%'}}>
           <tbody>

@@ -22,11 +22,12 @@ export default class Launcher extends React.Component {
     componentDidMount() {
         const launchOptions = getLaunchOptions(window);
         SMART.authorize({
-            // clientId: launchOptions.clientId,
-            clientId: "41fe1b29-1dc6-46e7-beaf-cfa7995d08dc",
-            scope: "launch launch/encounter online_access openid profile user/Account.read user/AllergyIntolerance.read user/Appointment.read user/CarePlan.read user/CareTeam.read user/Condition.read user/Coverage.read user/Device.read patient/Device.read user/DocumentReference.read user/Encounter.read user/Immunization.read user/MedicationRequest.read user/NutritionOrder.read user/Observation.read user/Organization.read user/Patient.read user/Person.read user/Practitioner.read user/Procedure.read user/ServiceRequest.read",
-            // scope: launchOptions.scope,
+            clientId: launchOptions.clientId,
+            // clientId: "41fe1b29-1dc6-46e7-beaf-cfa7995d08dc",
+            // scope: "launch launch/encounter online_access openid profile user/Account.read user/AllergyIntolerance.read user/Appointment.read user/CarePlan.read user/CareTeam.read user/Condition.read user/Coverage.read user/Device.read patient/Device.read user/DocumentReference.read user/Encounter.read user/Immunization.read user/MedicationRequest.read user/NutritionOrder.read user/Observation.read user/Organization.read user/Patient.read user/Person.read user/Practitioner.read user/Procedure.read user/ServiceRequest.read",
+            scope: launchOptions.scope,
             redirectUri: process.env.REACT_APP_REDIRECT_URI
+            // redirectUri: "http://localhost:3000/app"
         });
     }
     /**

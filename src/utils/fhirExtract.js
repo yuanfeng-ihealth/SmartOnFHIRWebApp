@@ -1,5 +1,5 @@
 import { ALL_RESOURCES_PATIENT_REFERENCE } from './patient';
-
+import { SUPPORTED_RESOURCES } from '../utils/constants';
 import { mappers } from 'fhir-mapper';
 import config from './ConfigManager';
 
@@ -30,37 +30,17 @@ function getPatientRecord(client) {
       return getEverything(client).then(bundle => applyMapping(bundle));
     } else {
       console.log(statement)
-      // console.log('Cannot use $everything, using reverse includes instead');
       const supportedResources = [];
-      // let revIncludeResources = [];
       statement.rest[0].resource.forEach(resource => {
-      //   if (resource.type === 'Patient') {
-      //     if (resource.searchRevInclude) {
-      //       revIncludeResources = resource.searchRevInclude;
-      //     }
-      //   } else if (resource.searchInclude) {
-      //     const filters = resource.searchInclude.filter(target => {
-      //       return target === `${resource.type}:patient` || target === `${resource.type}:subject`;
-      //     });
-      //     if (filters.length > 0) {
-      //       supportedResources.push(filters[0]);
-      //     }
-      //   } else 
-      if (resource.searchParam) {
+      if (resource.searchParam && SUPPORTED_RESOURCES.find(r => r === resource.type)) {
           const filters = resource.searchParam.filter(target => {
             return target.name === `patient` || target.name === `subject`;
-          });
+          })
           if (filters.length > 0) {
             supportedResources.push(`${resource.type}:${filters[0].name}`);
           }
         }
       });
-      // if (revIncludeResources.length > 0) {
-      //   return getEverythingRevInclude(client, revIncludeResources, getEverythingManually).then(bundle => applyMapping(bundle));
-      // } else 
-      // if (supportedResources.length > 0) {
-        // return getEverythingRevInclude(client, supportedResources, getEverythingManually).then(bundle => applyMapping(bundle));
-
       if (supportedResources.length > 0) {
         console.log('Cannot use reverse includes, retrieving all resources manually from predefined list');
         return getEverythingManually(client, supportedResources).then(bundle => applyMapping(bundle));
@@ -97,9 +77,6 @@ function getEverythingManually(client, supportedResources) {
     }
     if (resource[0] === 'Condition') {
       url = url + '&category=encounter-diagnosis'
-    }
-    if (resource[0] === 'DocumentReference') {
-      return
     }
     const request = client
       .request(url, { flat: true, pageLimit: 0 })

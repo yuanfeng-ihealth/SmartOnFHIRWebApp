@@ -1,151 +1,110 @@
+import moment from 'moment';
+
 const Measurements = [
   {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.1,
-     unit: "mmol/L"
-   },
-   date: "2020-11-01T23:00:00Z",
-   meal: "breakfast",
-   time: "before"
- },
+    type: "Blood Glucose",
+    date: moment(),
+    breakfast: [{reading: 5, unit: 'mmol/L', beforeMeal: true}, {reading: 11, unit: 'mmol/L', beforeMeal: false}],
+    // lunch: [{reading: 2.2, unit: 'mmol/L', beforeMeal: true}, {reading: 3.0, unit: 'mmol/L', beforeMeal: false}],
+    // dinner: [{reading: 2.4, unit: 'mmol/L', beforeMeal: true}, {reading: 3.1, unit: 'mmol/L', beforeMeal: false}]
+  },
   {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.1,
-     unit: "mmol/L"
-   },
-   date: "2020-11-01T23:00:00Z",
-   meal: "breakfast",
-   time: "after"
- },
- {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.3,
-     unit: "mmol/L"
-   },
-   date: "2020-11-02T23:00:00Z",
-   meal: "Lunch",
-   time: "before"
- },
- {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.3,
-     unit: "mmol/L"
-   },
-   date: "2020-11-02T23:00:00Z",
-   meal: "Lunch",
-   time: "after"
- },
- {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.4,
-     unit: "mmol/L"
-   },
-   date: "2020-11-04T23:00:00Z",
-   meal: "dinner",
-   time: "before"
- },
- {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.4,
-     unit: "mmol/L"
-   },
-   date: "2020-11-04T23:00:00Z",
-   meal: "dinner",
-   time: "after"
- },
- {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.3,
-     unit: "mmol/L"
-   },
-   date: "2020-11-05T23:00:00Z",
-   meal: "bedtime"
- },
- {
-   type: "Blood Glucose",
-   reading: {
-     value: 2.5,
-     unit: "mmol/L"
-   },
-   date: "2020-11-06T23:00:00Z",
-   meal: "overnight"
- },
- {
-    type: "Blood Pressure",
-    reading: {
-      diastolic: {
-        value: 74.0,
-        unit: "mmHg"
-      },
-      systolic: {
-        value: 118.5,
-        unit: "mmHg"
-      }
-    },
-    date: "2020-11-01T23:00:00Z"
+    type: "Blood Glucose",
+    date: moment().subtract(1, 'days'),
+    breakfast: [{reading: 4.9, unit: 'mmol/L', beforeMeal: true}, {reading: 10.3, unit: 'mmol/L', beforeMeal: false}],
+    lunch: [{reading: 4.6, unit: 'mmol/L', beforeMeal: true}, {reading: 1.8, unit: 'mmol/L', beforeMeal: false}],
+    // dinner: [{reading: 2.4, unit: 'mmol/L', beforeMeal: true}, {reading: 3.1, unit: 'mmol/L', beforeMeal: false}]
+  },
+  {
+    type: "Blood Glucose",
+    date: moment().subtract(2, 'days'),
+    breakfast: [{reading: 5.2, unit: 'mmol/L', beforeMeal: true}, {reading: 12, unit: 'mmol/L', beforeMeal: false}],
+    lunch: [{reading: 5.4, unit: 'mmol/L', beforeMeal: true}, {reading: 11.7, unit: 'mmol/L', beforeMeal: false}],
+    dinner: [{reading: 4.6, unit: 'mmol/L', beforeMeal: true}, {reading: 10.8, unit: 'mmol/L', beforeMeal: false}]
+  },
+  {
+    type: "Blood Glucose",
+    date: moment().subtract(3, 'days'),
+    breakfast: [{reading: 4.4, unit: 'mmol/L', beforeMeal: true}, {reading: 10.8, unit: 'mmol/L', beforeMeal: false}],
+    lunch: [{reading: 4.6, unit: 'mmol/L', beforeMeal: true}, {reading: 11.4, unit: 'mmol/L', beforeMeal: false}],
+    dinner: [{reading: 4.5, unit: 'mmol/L', beforeMeal: true}, {reading: 11.1, unit: 'mmol/L', beforeMeal: false}]
+  },
+  {
+    type: "Blood Glucose",
+    date: moment().subtract(4, 'days'),
+    // breakfast: [{reading: 2.5, unit: 'mmol/L', beforeMeal: true}, {reading: 3.2, unit: 'mmol/L', beforeMeal: false}],
+    lunch: [{reading: 4.9, unit: 'mmol/L', beforeMeal: true}, {reading: 10.1, unit: 'mmol/L', beforeMeal: false}],
+    dinner: [{reading: 5.2, unit: 'mmol/L', beforeMeal: true}, {reading: 10.3, unit: 'mmol/L', beforeMeal: false}]
+  },
+  {
+    type: "Blood Glucose",
+    date: moment().subtract(5, 'days'),
+    // breakfast: [{reading: 2.5, unit: 'mmol/L', beforeMeal: true}, {reading: 3.2, unit: 'mmol/L', beforeMeal: false}],
+      // lunch: [{reading: 2.2, unit: 'mmol/L', beforeMeal: true}, {reading: 3.0, unit: 'mmol/L', beforeMeal: false}],
+      dinner: [{reading: 2.4, unit: 'mmol/L', beforeMeal: true}, {reading: 3.1, unit: 'mmol/L', beforeMeal: false}]
+  },
+  {
+    type: "Blood Glucose",
+    date: moment().subtract(6, 'days'),
+    // breakfast: [{reading: 2.5, unit: 'mmol/L', beforeMeal: true}, {reading: 3.2, unit: 'mmol/L', beforeMeal: false}],
+    // lunch: [{reading: 2.2, unit: 'mmol/L', beforeMeal: true}, {reading: 3.0, unit: 'mmol/L', beforeMeal: false}],
+    // dinner: [{reading: 2.4, unit: 'mmol/L', beforeMeal: true}, {reading: 3.1, unit: 'mmol/L', beforeMeal: false}]
   },
   {
     type: "Blood Pressure",
-    reading: {
-      diastolic: {
-        value: 73.0,
-        unit: "mmHg"
-      },
-      systolic: {
-        value: 117.3,
-        unit: "mmHg"
-      }
-    },
-    date: "2020-11-02T23:00:00Z"
+    date: moment(),
+    // overnight: {systolic: 119, diastolic: 2.5, unit: 'mmHg'},
+    // morning: {systolic: 119, diastolic: 2.5, unit: 'mmHg'},
+    // afternoon: {systolic: 119, diastolic: 2.5, unit: 'mmHg'},
+    // evening: {systolic: 119, diastolic: 2.5, unit: 'mmHg'}
   },
   {
     type: "Blood Pressure",
-    reading: {
-      diastolic: {
-        value: 73.5,
-        unit: "mmHg"
-      },
-      systolic: {
-        value: 119.2,
-        unit: "mmHg"
-      }
-    },
-    date: "2020-11-04T23:00:00Z"
+    date: moment().subtract(1, 'days'),
+    // overnight: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 80},
+    morning: {systolic: 119, diastolic: 77, unit: 'mmHg', beat: 79},
+    // afternoon: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    evening: {systolic: 121, diastolic: 79, unit: 'mmHg', beat: 84}
   },
   {
     type: "Blood Pressure",
-    reading: {
-      diastolic: {
-        value: 72.1,
-        unit: "mmHg"
-      },
-      systolic: {
-        value: 116,
-        unit: "mmHg"
-      }
-    },
-    date: "2020-11-05T23:00:00Z"
+    date: moment().subtract(2, 'days'),
+    overnight: {systolic: 118, diastolic: 77, unit: 'mmHg', beat: 76},
+    morning: {systolic: 117, diastolic: 80, unit: 'mmHg', beat: 85},
+    // afternoon: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    evening: {systolic: 124, diastolic: 78, unit: 'mmHg', beat: 83}
   },
   {
     type: "Blood Pressure",
-    reading: {
-      diastolic: {
-        value: 72.3,
-        unit: "mmHg"
-      },
-      systolic: {
-        value: 116.6,
-        unit: "mmHg"
-      }
-    },
-    date: "2020-11-06T23:00:00Z"
+    date: moment().subtract(3, 'days'),
+    // overnight: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    morning: {systolic: 125, diastolic: 85, unit: 'mmHg', beat: 95},
+    // afternoon: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    evening: {systolic: 119, diastolic: 74, unit: 'mmHg', beat: 84}
+  },
+  {
+    type: "Blood Pressure",
+    date: moment().subtract(4, 'days'),
+    // overnight: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    morning: {systolic: 122, diastolic: 77, unit: 'mmHg', beat: 79},
+    afternoon: {systolic: 121, diastolic: 74, unit: 'mmHg', beat: 80},
+    evening: {systolic: 117, diastolic: 72, unit: 'mmHg', beat: 82}
+  },
+  {
+    type: "Blood Pressure",
+    date: moment().subtract(5, 'days'),
+  // overnight: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    morning: {systolic: 124, diastolic: 74, unit: 'mmHg', beat: 99},
+    // afternoon: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    evening: {systolic: 122, diastolic: 76, unit: 'mmHg', beat: 82}
+  },
+  {
+    type: "Blood Pressure",
+    date: moment().subtract(6, 'days'),
+    // overnight: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    morning: {systolic: 126, diastolic: 80, unit: 'mmHg', beat: 84},
+    // afternoon: {systolic: 119, diastolic: 2.5, unit: 'mmHg', beat: 79},
+    evening: {systolic: 124, diastolic: 77, unit: 'mmHg', beat: 81}
   }
 ]
 

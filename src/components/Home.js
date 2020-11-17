@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import logo from '../logo.png';
+import logo from '../logos/logo.png';
 import FHIR from 'fhirclient';
 import { getPatientRecord } from '../utils/fhirExtract';
 import { FHIRClientProvider } from './FHIRClient';
@@ -48,6 +48,7 @@ export default function Home() {
       // dispatch({type: 'updateEncounter', encounter: client.encounter});
       getPatientRecord(client).then((records) => {
         // setPatientRecords(records);
+        console.log(records)
         dispatch({type: "updateRecords", records})
         dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
         setLoading(false)

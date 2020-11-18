@@ -25,7 +25,7 @@ export default class Launcher extends React.Component {
             clientId: launchOptions.clientId,
             scope: launchOptions.scope,
             // redirectUri: "http://localhost:3000/app"
-//             redirectUri: process.env.REACT_APP_REDIRECT_URI
+            redirectUri: "https://optimistic-montalcini-d32c61.netlify.app/app"
         });
     }
     /**

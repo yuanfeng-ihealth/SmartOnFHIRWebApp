@@ -24,8 +24,8 @@ export default class Launcher extends React.Component {
         SMART.authorize({
             clientId: launchOptions.clientId,
             scope: launchOptions.scope,
-            redirectUri: "http://localhost:3000/app"
-            // redirectUri: process.env.REACT_APP_REDIRECT_URI
+            // redirectUri: "http://localhost:3000/app"
+            redirectUri: process.env.REACT_APP_REDIRECT_URI
         });
     }
     /**

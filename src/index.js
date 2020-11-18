@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import './styles/index.scss';
 import './utils/fontawesomeLibrary';
 import reportWebVitals from './reportWebVitals';
-
 import App from './components/App';
+
+require('dotenv').config();
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,10 +1,14 @@
-import React, { FC, useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import seedMeasurements from '../../seeds/measurements';
+import moment from 'moment';
+import _ from 'lodash';
+import '../../App.scss'
 // import axios from 'axios';
-import api from '../../api';
-import { makeBG } from './BG';
-import { makeBP } from './BP';
-import { getPatientRecord, getPatientObservations } from '../../utils/fhirExtract';
+// import api from '../../api';
+import { makeBG, makeBP } from '../../utils/helper';
+import { getPatientObservations } from '../../utils/fhirExtract';
+import { Col, Table } from 'antd';
+const { Column, ColumnGroup } = Table;
 
 const Measurement = ({ store, loading, client, dispatch, encounter }) => {
   const [measurements, setMeasurements] = useState(seedMeasurements);
@@ -53,8 +57,8 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
   // }
 
   const migrate = async (reading) => {
-    console.log(store)
-    console.log(reading)
+    // console.log(store)
+    // console.log(reading)
     const ehr_id = user.ehr_id;
     console.log(encounter)
     // console.log(encounter_id)
@@ -82,44 +86,367 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
     }
     return bool ? <div style={{...style.font, ...style.button}} onClick={() => migrate(bp)}>Send to EHR</div> : null
   }
+
+  const renderBGTable = () => {
+    const filterB = (data) => {
+      console.log(data)
+      return _.filter(data, ['beforeMeal', true])
+    }
+    
+    const filterA = (data) => {
+      console.log(data)
+      return _.filter(data, ['beforeMeal', false])
+    }
+
+    const renderMeasurement = (filtered) => {
+      console.log(filtered);
+      return {
+        children: 
+        <div>
+          <div>
+            <span>
+              {filtered[0] ? Math.round(filtered[0].reading * 18) : ""}
+            </span>
+          </div>
+        </div>
+      }
+    }
+
+    return (
+    <Table 
+      classname="logBookTable"
+      style={{...style.table, marginBottom: '30px'} } 
+      footer={ () => <span>Measurements are in mg/dL</span>}
+      title={() => <span style={{fontWeight: 'bold'}}>Blood Glucose</span>}
+      dataSource={measurements.filter((m) => m.type === "Blood Glucose")} 
+      pagination={false}
+    >
+      <Column
+        title="Date"
+        dataIndex="date"
+        key='date'
+        className='bg-cell'
+        // sorter={(a,b)=>a.date-b.date}
+        // showSorterTooltip={false}
+        render={(data)=>moment(data).format('MM/DD/YYYY')}
+        width={'11%'}
+        style={style.cell}
+      />
+      <Column
+        title="overnight"
+        className='overnight bg-cell'
+        dataIndex="overnight"
+        key='reading'
+        // sorter={(a,b)=>a.date-b.date}
+        // render={(data)=>console.log(data)}
+        width={'11%'}
+      />
+      <ColumnGroup title="Breakfast" className='bg-cell'>
+      <Column
+        title="B"
+        dataIndex="breakfast"
+        key='reading'
+        className='bg-cell'
+        // sorter={(a,b)=>a.date-b.date}
+        render={(data)=>{
+          const filtered = filterB(data) || [];
+          return renderMeasurement(filtered)
+        }}
+        width={'12%'}
+      />
+      <Column
+        title="A"
+        dataIndex="breakfast"
+        key='reading'
+        className='bg-cell' 
+        // sorter={(a,b)=>a.date-b.date}
+        render={(data)=>{
+          const filtered = filterA(data) || {};
+          return renderMeasurement(filtered)
+        }}
+        width={'12%'}
+      />
+      </ColumnGroup>
+      <ColumnGroup title="Lunch" className='bg-cell'>
+      <Column
+        title="B"
+        dataIndex="lunch"
+        key='reading'
+        className='bg-cell'
+        // sorter={(a,b)=>a.date-b.date}
+        render={(data)=>{
+          const filtered = filterB(data) || [];
+          return renderMeasurement(filtered)
+        }}
+        width={'12%'}
+      />
+      <Column
+        title="A"
+        dataIndex="lunch"
+        key='reading'
+        className='bg-cell'
+        render={(data)=>{
+          const filtered = filterB(data) || [];
+          return renderMeasurement(filtered)
+        }}
+        width={'12%'}
+      />
+      </ColumnGroup>
+      <ColumnGroup title="Dinner" className='bg-cell'>
+      <Column
+        title="B"
+        dataIndex="dinner"
+        key='reading'
+        className='bg-cell'
+        render={(data)=>{
+          const filtered = filterB(data) || [];
+          return renderMeasurement(filtered)
+        }}
+        width={'12%'}
+      />
+      <Column
+        title="A"
+        dataIndex="dinner"
+        key='reading'
+        className='bg-cell'
+        render={(data)=>{
+          const filtered = filterB(data) || [];
+          return renderMeasurement(filtered)
+        }}
+        width={'12%'}
+      />
+      </ColumnGroup>
+      <Column
+        title="bedtime"
+        dataIndex="bedtime"
+        key='reading'
+        // className='bg-cell'
+        className='bg-cell'
+        // sorter={(a,b)=>a.date-b.date}
+        // render={(data)=>{
+        //   console.log(data)
+        // }}
+        width={'12%'}
+      />
+    </Table>
+    )
+  }
+
+  const renderBGSummary = () => {
+    const source = [
+      {type: 'Fasting', average: 62, count: 3, percentage: "33%", range: "45-85"},
+      {type: 'Before Meal', average: 71, count: 10, percentage: "60%", range: "45-85"},
+      {type: 'After Meal', average: 127, count: 11, percentage: "45%", range: "41-200"},
+      {type: 'Bedtime+Overnight Hypos', average: 44, count: 2, percentage: "33%", range: "43-45"},
+      {type: 'Bedtime', average: 85, count: 1, percentage: "0%", range: "85-85"},
+      {type: 'Overnight', average: 44, count: 2, percentage: "0%", range: "43-45"},
+      {type: 'Critical High', average: 200, count: 2, percentage: "N/A", range: "200-200"},
+      {type: 'Critical Low', average: 47, count: 8, percentage: "N/A", range: "41-56"},
+   ];
+
+    const columns = [
+      {
+          title:'Type',
+          key:'type',
+          align:'center',
+          dataIndex: 'type',
+          width: '26%',
+          className:'bg-cell'
+      },
+      {
+          title:'Ct.',
+          key:'count',
+          align:'center',
+          dataIndex:'count',
+          width: '10%',
+          className:'bg-cell'
+      },
+      {
+          title:'Average\n(mg/dL)',
+          key:'average',
+          align:'center',
+          dataIndex:'average',
+          className:'bg-cell'
+      },
+      {
+          title:'Range\n(mg/dL)',
+          key:'range',
+          align:'center',
+          dataIndex:'range',
+          width: '20%',
+          className:'bg-cell'
+      },
+      {
+          title:'Vital Spent in Normal Range',
+          key:'percentage',
+          align:'center',
+          dataIndex:'percentage',
+          className:'bg-cell'
+      },
+    ];
+
+    return <Table 
+                    dataSource={source}
+                    columns={columns}
+                    bordered
+                    pagination={false}
+                    title={ ()=> <span>Blood Glucose Summary</span> }
+                    style={{...style.table, justifyContent: 'space-between'}}
+                    rowClassName='bg-cell'
+                    className='statisticsTable'
+                />
+  }
+
+  const renderBPTable = () => {
+    const renderMeasurement = (data) => {
+      
+      return data ? (
+        <div>
+          <div>
+            <span>{data.systolic}/{data.diastolic} {data.beat}bpm</span>
+          </div>
+        </div>
+      ) : ""
+    }
+    return (
+      <Table 
+        classname="logBookTable"
+        style={{...style.table, marginBottom: '30px'} } 
+        footer={ () => <span>Measurements are in mmHg</span>}
+        title={() => <span style={{fontWeight: 'bold'}}>Blood Pressure</span>}
+        dataSource={measurements.filter((m) => m.type === "Blood Pressure")} 
+        pagination={false}
+      >
+        <Column
+          title="Date"
+          dataIndex="date"
+          key='date'
+          className='bp-cell'
+          // sorter={(a,b)=>a.date-b.date}
+          // showSorterTooltip={false}
+          render={(data)=>moment(data).format('MM/DD/YYYY')}
+          width={'11%'}
+          style={style.cell}
+        />
+        <Column
+          title="Overnight"
+          className='bp-cell'
+          dataIndex="overnight"
+          key='reading'
+          // sorter={(a,b)=>a.date-b.date}
+          render={(data)=>renderMeasurement(data)}
+          width={'11%'}
+        />
+        <Column
+          title="Morning"
+          className='bp-cell'
+          dataIndex="morning"
+          key='reading'
+          // sorter={(a,b)=>a.date-b.date}
+          render={(data)=>renderMeasurement(data)}
+          width={'11%'}
+        />
+        <Column
+          title="Afternoon"
+          className='bp-cell'
+          dataIndex="afternoon"
+          key='reading'
+          // sorter={(a,b)=>a.date-b.date}
+          render={(data)=>renderMeasurement(data)}
+          width={'11%'}
+        />
+        <Column
+          title="Evening"
+          className='bp-cell'
+          dataIndex="evening"
+          key='reading'
+          // sorter={(a,b)=>a.date-b.date}
+          render={(data)=>renderMeasurement(data)}
+          width={'11%'}
+        />
+        
+      </Table>
+      )
+  }
   
+  const renderBPSummary = () => {
+    const source = [
+      {type: 'Fasting', average: 62, count: 3, percentage: "33%", range: "45-85"},
+      {type: 'Before Meal', average: 71, count: 10, percentage: "60%", range: "45-85"},
+      {type: 'After Meal', average: 127, count: 11, percentage: "45%", range: "41-200"},
+      {type: 'Bedtime+Overnight Hypos', average: 44, count: 2, percentage: "33%", range: "43-45"},
+      {type: 'Bedtime', average: 85, count: 1, percentage: "0%", range: "85-85"},
+      {type: 'Overnight', average: 44, count: 2, percentage: "0%", range: "43-45"},
+      {type: 'Critical High', average: 200, count: 2, percentage: "N/A", range: "200-200"},
+      {type: 'Critical Low', average: 47, count: 8, percentage: "N/A", range: "41-56"},
+   ];
+
+    const columns = [
+      {
+          title:'Type',
+          key:'type',
+          align:'center',
+          dataIndex: 'type',
+          width: '26%',
+          className:'bp-cell'
+      },
+      {
+          title:'Ct.',
+          key:'count',
+          align:'center',
+          dataIndex:'count',
+          width: '10%',
+          className:'bp-cell'
+      },
+      {
+          title:'Average\n(mmHg)',
+          key:'average',
+          align:'center',
+          dataIndex:'average',
+          className:'bp-cell'
+      },
+      {
+          title:'Range\n(mmHg)',
+          key:'range',
+          align:'center',
+          dataIndex:'range',
+          width: '20%',
+          className:'bp-cell'
+      },
+      {
+          title:'Vital Spent in Normal Range',
+          key:'percentage',
+          align:'center',
+          dataIndex:'percentage',
+          className:'bp-cell'
+      },
+    ];
+
+    return <Table 
+                    dataSource={source}
+                    columns={columns}
+                    bordered
+                    pagination={false}
+                    title={ ()=> <span>Blood Pressure Summary</span> }
+                    style={{...style.table, justifyContent: 'space-between'}}
+                    rowClassName='bg-cell'
+                    className='statisticsTable'
+          />
+  }
+
   return loading ? <div>loading</div> : (
-    store.enroll === true ?
+    // store.enroll === true ?
+    store ? 
     <div style={{...style.container}}>
       <div>
-        <div style={style.sectionHeader}>Blood Glucose Summary</div>
-        <table style={{width: '100%'}}>
-          <tbody>
-          <tr>
-            <th>Blood Glucose</th>
-            <th>Date</th>
-          </tr>
-          {measurements.filter((m) => m.type === 'Blood Glucose').map((bg, i) => 
-            <tr key={i}>
-              <td>{bg.reading.value + " " + bg.reading.unit}</td>
-              <td>{bg.date}</td>
-            </tr>
-          )}
-          </tbody>
-        </table>
-        <div style={{...style.sectionHeader, marginTop: '40px'}}>Blood Pressure Summary</div>
-        <table style={{width: '100%'}}>
-          <tbody>
-            <tr>
-              <th>Systolic</th>
-              <th>Diastolic</th>
-              <th>Date</th>
-            </tr>
-            {measurements.filter((m) => m.type === 'Blood Pressure').map((bp, i) => 
-              <tr key={i}>
-                <td>{bp.reading.systolic.value} {bp.reading.systolic.unit}</td>
-                <td>{bp.reading.diastolic.value} {bp.reading.diastolic.unit}</td>
-                <td>{bp.date}</td>
-                {/* <td>{renderButton(bp)}</td> */}
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          {renderBGTable()}
+          {renderBGSummary()}
+        </div>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          {renderBPTable()}
+          {renderBPSummary()}
+        </div>
       </div>
     </div>
     : 
@@ -156,9 +483,20 @@ const style = {
     padding: '2px'
   },
   container: {
-    background: 'ghostwhite',
-    width: '40%',
+    // background: 'ghostwh ite',
+    // width: '40%',
     padding: '3em'
+  },
+  table: {
+    textAlign: "center",
+    // border: "1px solid grey",
+    // borderRadius: '5px',
+    width: '49%',
+    // margin:
+  },
+  cell: {
+    padding: '10px',
+    // border: '1px solid grey'
   }
 }
 

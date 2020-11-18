@@ -1,86 +1,68 @@
-// export const makeBP = (data, ehr_id, encounter_id) => {
-//   return {
-//     "resourceType": "Observation",
-//     "meta": {
-//         "versionId": "2",
-//         "lastUpdated": "2019-06-05T03:00:05.835-04:00",
-//         "tag": [
-//             {
-//                 "system": "https://smarthealthit.org/tags",
-//                 "code": "synthea-5-2019"
-//             }
-//         ]
-//     },
-//     "status": "final",
-//     "category": [
-//         {
-//             "coding": [
-//                 {
-//                     "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-//                     "code": "vital-signs",
-//                     "display": "vital-signs"
-//                 }
-//             ]
-//         }
-//     ],
-//     "code": {
-//         "coding": [
-//             {
-//                 "system": "http://loinc.org",
-//                 "code": "55284-4",
-//                 "display": "Blood Pressure"
-//             }
-//         ],
-//         "text": "Blood Pressure"
-//     },
-//     "subject": {
-//         "reference": `Patient/${ehr_id}`
-//     },
-//     "encounter": {
-//         "reference": `Encounter/${encounter_id}`
-//     },
-//     "effectiveDateTime": data.date,
-//     "issued": data.date,
-//     "component": [
-//         {
-//             "code": {
-//                 "coding": [
-//                     {
-//                         "system": "http://loinc.org",
-//                         "code": "8462-4",
-//                         "display": "Diastolic Blood Pressure"
-//                     }
-//                 ],
-//                 "text": "Diastolic Blood Pressure"
-//             },
-//             "valueQuantity": {
-//                 "value": data.reading.diastolic.value,
-//                 "unit": "mm[Hg]",
-//                 "system": "http://unitsofmeasure.org",
-//                 "code": "mm[Hg]"
-//             }
-//         },
-//         {
-//             "code": {
-//                 "coding": [
-//                     {
-//                         "system": "http://loinc.org",
-//                         "code": "8480-6",
-//                         "display": "Systolic Blood Pressure"
-//                     }
-//                 ],
-//                 "text": "Systolic Blood Pressure"
-//             },
-//             "valueQuantity": {
-//                 "value": data.reading.systolic.value,
-//                 "unit": "mm[Hg]",
-//                 "system": "http://unitsofmeasure.org",
-//                 "code": "mm[Hg]"
-//             }
-//         }
-//     ]
-// }
-// }
+import { CERNER_SCOPES, EPIC_SCOPES } from './constants';
+
+export const getLaunchOptions = (window) => {
+  const context = {};
+
+  if (window.location.href.match('cerner')) {
+    context.clientId = process.env.REACT_APP_CERNER_CLIENT_ID;
+    context.scope = CERNER_SCOPES;
+  }
+  if (window.location.href.match('epic')) {
+      context.clientId = process.env.REACT_APP_EPIC_CLIENT_ID;
+      context.scope = EPIC_SCOPES;
+  }
+
+  return context;
+};
+
+export const makeBG = (bg, ehr_id) => {
+  return {
+    "resourceType": "Observation",
+    "meta": {
+        "versionId": "3",
+        "lastUpdated": "2019-06-06T03:04:16.800-04:00",
+        "tag": [
+            {
+                "system": "https://smarthealthit.org/tags",
+                "code": "synthea-5-2019"
+            }
+        ]
+    },
+    "status": "final",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "laboratory",
+                    "display": "laboratory"
+                }
+            ]
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "2339-0",
+                "display": "Glucose"
+            }
+        ],
+        "text": "Glucose"
+    },
+    "subject": {
+        "reference": `Patient/${ehr_id}`
+    },
+    "effectiveDateTime": bg.date,
+    "issued": getComputedStyle.date,
+    "valueQuantity": {
+        "value": bg.reading.value * 18,
+        "unit": "mg/dL",
+        "system": "http://unitsofmeasure.org",
+        "code": "mg/dL"
+    }
+  }
+}
 
 export const makeBP = (data, ehr_id, encounter_id) => {
   return {
@@ -189,5 +171,5 @@ export const makeBP = (data, ehr_id, encounter_id) => {
             }
         }
     ]
-}
+  }
 }

@@ -26,8 +26,9 @@ const PatientRecord = ({ resources, loading, client }) => {
   console.log(store.records)
   return (
     <div style={{display: 'flex'}}>
-      <div style={{width: '60%'}}>
-        <PatientVisualizer dispatch={dispatch} client={client} patient={store.patient} observations={getResourceByType(resources, 'Observation')}/>
+      <div style={{width: '100%'}}>
+        {/* <PatientVisualizer dispatch={dispatch} client={client} patient={store.patient} observations={getResourceByType(resources, 'Observation')}/> */}
+        <Measurement store={store} client={client} loading={loading} dispatch={dispatch} encounter={getResourceByType(store.records, 'Encounter').find(e => e.status === 'in-progress' || e.status === 'planned' || e.status === 'finished')}/>
         <ConditionsVisualizer rows={getResourceByType(resources, 'Condition')} />
         <ObservationsVisualizer rows={getResourceByType(store.observations, 'Observation')} />
         <ReportsVisualizer rows={getResourceByType(resources, 'DiagnosticReport')} />
@@ -38,7 +39,6 @@ const PatientRecord = ({ resources, loading, client }) => {
         <EncountersVisualizer rows={getResourceByType(resources, 'Encounter')} />
         <ImmunizationsVisualizer rows={getResourceByType(resources, 'Immunization')} />
       </div>
-      <Measurement store={store} client={client} loading={loading} dispatch={dispatch} encounter={getResourceByType(store.records, 'Encounter').find(e => e.status === 'in-progress' || e.status === 'planned' || e.status === 'finished')}/>
     </div>
   );
 };

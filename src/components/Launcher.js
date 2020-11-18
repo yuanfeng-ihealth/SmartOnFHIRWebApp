@@ -1,6 +1,7 @@
 import React from "react";
-import { oauth2 as SMART } from "fhirclient";
-import { CERNER_SCOPES, EPIC_SCOPES } from  "../utils/constants";
+import { client, oauth2 as SMART } from "fhirclient";
+// import { CERNER_SCOPES, EPIC_SCOPES } from  "../utils/constants";
+import { getLaunchOptions } from '../utils/helper';
 
 /**
  * Typically the launch page is an empty page with a `SMART.authorize`
@@ -11,6 +12,7 @@ import { CERNER_SCOPES, EPIC_SCOPES } from  "../utils/constants";
  * the `/launch` path and render our component. Then, after our page is
  * rendered we start the auth flow.
  */
+
 export default class Launcher extends React.Component {
     /**
      * This is configured to make a Standalone Launch, just in case it
@@ -18,12 +20,12 @@ export default class Launcher extends React.Component {
      * and `launch` url parameters
      */
     componentDidMount() {
+        const launchOptions = getLaunchOptions(window);
         SMART.authorize({
-            // clientId: "41fe1b29-1dc6-46e7-beaf-cfa7995d08dc",
-            clientId: "aac145fa-a1b3-4730-b5ac-c072b383394a",
-            scope: CERNER_SCOPES,
-            // scope: EPIC_SCOPES,
-            redirectUri: "http://localhost:3000/app"
+            clientId: launchOptions.clientId,
+            scope: launchOptions.scope,
+            // redirectUri: "http://localhost:3000/app"
+            redirectUri: process.env.REACT_APP_REDIRECT_URI
         });
     }
     /**

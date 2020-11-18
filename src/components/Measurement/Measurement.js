@@ -60,7 +60,6 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
     // console.log(store)
     // console.log(reading)
     const ehr_id = user.ehr_id;
-    console.log(encounter)
     // console.log(encounter_id)
     let send;
     if (reading.type === "Blood Pressure") {
@@ -71,7 +70,6 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
     client.create(send).then((res) => {
       console.log(res);
       getPatientObservations(client).then((observations) => {
-        console.log(observations)
         dispatch({type: 'updateObservations', observations})
       })
     })
@@ -89,17 +87,14 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
 
   const renderBGTable = () => {
     const filterB = (data) => {
-      console.log(data)
       return _.filter(data, ['beforeMeal', true])
     }
     
     const filterA = (data) => {
-      console.log(data)
       return _.filter(data, ['beforeMeal', false])
     }
 
     const renderMeasurement = (filtered) => {
-      console.log(filtered);
       return {
         children: 
         <div>

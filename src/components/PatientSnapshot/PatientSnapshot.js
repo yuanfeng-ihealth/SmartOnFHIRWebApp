@@ -46,7 +46,7 @@ const PatientSnapshot = () => {
           <li>Ethnicicty: {patient.extension[1].extension[1].valueString}</li>
           <li>Address: {patient.address[0].line}</li>
           <li>Location: {address} {patient.address[0].postalCode}</li>
-          <li>Managing Org: {patient.managingOrganization.display}</li>
+          {/* <li>Managing Org: {patient.managingOrganization.display}</li> */}
         </ul>
       </div>
     </div>

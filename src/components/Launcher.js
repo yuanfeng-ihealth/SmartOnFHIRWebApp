@@ -48,7 +48,7 @@ export default class Launcher extends React.Component {
             // iss: "https://apporchard.epic.com/interconnect-aocurprd-oauth/api/FHIR/R4",
             // iss: "https://fhir-ehr-code.cerner.com/r4/ec2458f2-1e24-41c8-b71b-0e701af7583d",
             // redirectUri: "http://localhost:3000/app"
-            redirectUri: process.env.REACT_APP_REDIRECT_URI
+            redirectUri: "https://optimistic-montalcini-d32c61.netlify.app/app"
         });
     }
     /**

@@ -7,6 +7,7 @@ import { StoreProvider } from './StoreProvider';
 import PatientRecord from './PatientRecord';
 import Header from './Header';
 import Navigation from './Navigation'
+import { getPatient, getAllMeasurements } from '../api'
 
 /**
  * Wraps everything into `FhirClientProvider` so that any component
@@ -34,7 +35,7 @@ const reducer = (state, action) => {
   }
 }
 
-export default function Home() {
+export default function Home(props) {
   // const [patientRecords, setPatientRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fhir, setFhir] = useState(null);
@@ -42,32 +43,43 @@ export default function Home() {
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
-    FHIR.oauth2.ready().then((client) => {
-      window.fhir = client;
-      setFhir(client);
-      // dispatch({type: 'updateEncounter', encounter: client.encounter});
-      getPatientRecord(client).then((records) => {
-        // setPatientRecords(records);
-        console.log(records)
-        dispatch({type: "updateRecords", records})
-        dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
-        setLoading(false)
-        client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
-        // client.user.read().then((user) => dispatch({type: 'updateUser', user}))
-    })
-  })
+    FhirLaunch()
   }, [])
+
+  const FhirLaunch = () => {
+    if (props.location.standaloneLaunch) {
+      getPatient(2).then((data) =>{
+        console.log(data);
+        dispatch({type: "updatePatient", patient: data.data})
+      })
+    } else {
+      FHIR.oauth2.ready().then((client) => {
+        window.fhir = client;
+        setFhir(client);
+        // dispatch({type: 'updateEncounter', encounter: client.encounter});
+        getPatientRecord(client).then((records) => {
+          // setPatientRecords(records);
+          console.log(records)
+          dispatch({type: "updateRecords", records})
+          dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
+          setLoading(false)
+          client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
+          // client.user.read().then((user) => dispatch({type: 'updateUser', user}))
+        })
+      })
+    }
+  }
 
 
   return (
     <FHIRClientProvider fhir={fhir}>
       <StoreProvider store={state} dispatch={dispatch}>
         <div>
-          <Header logo={logo} />
-          <Navigation resourcesLength={state.records && state.records.length}/>
+          {/* <Header logo={logo} /> */}
+          {/* <Navigation resourcesLength={state.records && state.records.length}/> */}
         </div>
         <div>
-          <PatientRecord client={fhir} resources={state.records} loading={loading} dispatch={dispatch} />
+          {/* <PatientRecord client={fhir} resources={state.records} loading={loading} dispatch={dispatch} /> */}
         </div>
     </StoreProvider>
   </FHIRClientProvider>

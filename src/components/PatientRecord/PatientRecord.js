@@ -17,6 +17,9 @@ import Measurement from '../Measurement';
 import { finished } from 'stream';
 
 const getResourceByType = ( patientRecord, resourceType ) => {
+  if (!patientRecord) {
+    return [];
+  }
   return patientRecord.filter(resource => resource.resourceType === resourceType);
 };
 

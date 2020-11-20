@@ -64,6 +64,7 @@ export default function Home(props) {
           dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
           setLoading(false)
           client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
+          getPatient(3).then((d) => console.log(d.data))
           // client.user.read().then((user) => dispatch({type: 'updateUser', user}))
         })
       })
@@ -75,11 +76,11 @@ export default function Home(props) {
     <FHIRClientProvider fhir={fhir}>
       <StoreProvider store={state} dispatch={dispatch}>
         <div>
-          {/* <Header logo={logo} /> */}
-          {/* <Navigation resourcesLength={state.records && state.records.length}/> */}
+          <Header logo={logo} />
+          <Navigation resourcesLength={state.records && state.records.length}/>
         </div>
         <div>
-          {/* <PatientRecord client={fhir} resources={state.records} loading={loading} dispatch={dispatch} /> */}
+          <PatientRecord client={fhir} resources={state.records} loading={loading} dispatch={dispatch} />
         </div>
     </StoreProvider>
   </FHIRClientProvider>

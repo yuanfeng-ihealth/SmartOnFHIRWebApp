@@ -67,7 +67,7 @@ export default class Launcher extends React.Component {
                     Smart Launch
                 </div>
                 <div className="button" onClick={() => this.standaloneLaunch()}>
-                    Standalone Launch
+                    iHealth Launch
                 </div>
             </div>
         )

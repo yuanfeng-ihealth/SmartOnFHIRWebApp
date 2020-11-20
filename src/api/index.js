@@ -20,12 +20,14 @@ export const insertMeasurement = payload => api.post(`/Observation`, payload)
 export const getAllMeasurements = () => api.get(`/Observation`)
 export const createPatient = payload => api.post(`/Patient`, payload)
 export const getPatient = (ehr_id) => api.get(`/Patient/${ehr_id}`)
+export const getPatients = () => api.get(`/Patient`);
 
 const apis = {
     insertMeasurement,
     getAllMeasurements,
     createPatient,
-    getPatient
+    getPatient,
+    getPatients
 }
 
 export default apis

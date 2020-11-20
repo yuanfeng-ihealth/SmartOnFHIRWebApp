@@ -27,7 +27,6 @@ const PatientSnapshot = () => {
   const gender = _.get(store.patient, 'gender', "");
   const race = _.get(store.patient, 'extension[0].extension[1].valueString');
   const ethnicity = _.get(store.patient, 'extension[1].extension[1].valueString');
-  // const address = _.get(store.patient, 'address[0].line', "");
   const location = _.get(store.patient, 'address[0].postalCode', "");
   
 

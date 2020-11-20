@@ -7,7 +7,7 @@ import { StoreProvider } from './StoreProvider';
 import PatientRecord from './PatientRecord';
 import Header from './Header';
 import Navigation from './Navigation'
-import { getPatient, getAllMeasurements } from '../api'
+import { getPatient, getAllMeasurements, getPatients } from '../api'
 
 /**
  * Wraps everything into `FhirClientProvider` so that any component
@@ -18,6 +18,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'updatePatient':
       return {...state, patient: action.patient};
+    case 'updatePatients':
+      return {...state, patients: action.patients};
     case 'updateUser': 
       return {...state, user: action.user};
     case 'updateRecords':
@@ -38,6 +40,7 @@ const reducer = (state, action) => {
 export default function Home(props) {
   // const [patientRecords, setPatientRecords] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(false);
   const [fhir, setFhir] = useState(null);
   const initState = {};
   const [state, dispatch] = useReducer(reducer, initState);
@@ -47,12 +50,6 @@ export default function Home(props) {
   }, [])
 
   const FhirLaunch = () => {
-    if (props.location.standaloneLaunch) {
-      getPatient(2).then((data) =>{
-        console.log(data);
-        dispatch({type: "updatePatient", patient: data.data})
-      })
-    } else {
       FHIR.oauth2.ready().then((client) => {
         window.fhir = client;
         setFhir(client);
@@ -67,12 +64,18 @@ export default function Home(props) {
           getPatient(3).then((d) => console.log(d.data))
           // client.user.read().then((user) => dispatch({type: 'updateUser', user}))
         })
+      }).catch(() => {
+          setSearch(false);
+          getPatients().then((bundle) =>{
+            console.log(bundle);
+            dispatch({type: "updatePatients", patients: bundle.data.entry});
+            setLoading(false)
+          })
       })
-    }
   }
 
 
-  return (
+  return search ? (
     <FHIRClientProvider fhir={fhir}>
       <StoreProvider store={state} dispatch={dispatch}>
         <div>
@@ -87,5 +90,10 @@ export default function Home(props) {
   // <div>
   //   HELLO
   // </div>
-  );
+  ) : 
+  <div>
+    { state.patients ? state.patients.map((entry) => {
+      return <li>{entry.resource.name[0].given + ' ' + entry.resource.name[0].family}</li>
+    }) : ""}
+  </div>
 }

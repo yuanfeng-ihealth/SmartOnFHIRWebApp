@@ -21,7 +21,7 @@ const Navigation = (props) => {
       </div>
 
       <div className={classes['navigation__right-panel']}>
-       <div>{`Fetched ${props.resourcesLength} resources`}</div>
+       <div>{`Fetched ${props.resourcesLength ? props.resourcesLength : 0} resources`}</div>
       </div>
     </nav>
   );

@@ -25,8 +25,6 @@ const getResourceByType = ( patientRecord, resourceType ) => {
 
 const PatientRecord = ({ resources, loading, client }) => {
   const { store, dispatch } = useStore();
-  console.log(getResourceByType(store.records, 'Encounter'))
-  console.log(store.records)
   return (
     <div style={{display: 'flex'}}>
       <div style={{width: '100%'}}>

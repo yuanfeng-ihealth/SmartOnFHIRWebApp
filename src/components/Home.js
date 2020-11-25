@@ -7,7 +7,7 @@ import { StoreProvider } from './StoreProvider';
 import PatientRecord from './PatientRecord';
 import Header from './Header';
 import Navigation from './Navigation'
-import { getPatient, getAllMeasurements, getPatients } from '../api'
+import { getPatient, createPatient, getAllMeasurements, getPatients } from '../api'
 
 /**
  * Wraps everything into `FhirClientProvider` so that any component
@@ -25,20 +25,23 @@ const reducer = (state, action) => {
     case 'updateRecords':
       console.log(action)
       return {...state, records: action.records};
+    case 'updateEnroll':
+      return {...state, enroll: action.enroll};
     case 'updateObservations':
       console.log(action)
       return {...state, observations: action.observations};
-    case 'updateEnroll':
-      return {...state, enroll: action.enroll};
-    case 'updateEncounter': 
-      return {...state, encounter: action.encounter}
+    case 'updateEncounters': 
+      return {...state, encounters: action.encounters}
+    case 'updateConditions':
+      return {...state, conditions: action.conditions}
+    case 'updateMedications':
+      return {...state, medications: action.medications}
     default: 
       return state
   }
 }
 
 export default function Home(props) {
-  // const [patientRecords, setPatientRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
   const [fhir, setFhir] = useState(null);
@@ -51,21 +54,18 @@ export default function Home(props) {
 
   const FhirLaunch = () => {
       FHIR.oauth2.ready().then((client) => {
-        window.fhir = client;
         setFhir(client);
-        // dispatch({type: 'updateEncounter', encounter: client.encounter});
+        setSearch(false);
         getPatientRecord(client).then((records) => {
-          // setPatientRecords(records);
           console.log(records)
+          client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
           dispatch({type: "updateRecords", records})
           dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
+          getPatients().then((d) => console.log(d.data))
           setLoading(false)
-          client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
-          getPatient(3).then((d) => console.log(d.data))
-          // client.user.read().then((user) => dispatch({type: 'updateUser', user}))
         })
       }).catch(() => {
-          setSearch(false);
+          setSearch(true);
           getPatients().then((bundle) =>{
             console.log(bundle);
             dispatch({type: "updatePatients", patients: bundle.data.entry});
@@ -74,8 +74,7 @@ export default function Home(props) {
       })
   }
 
-
-  return search ? (
+  return !search ? (
     <FHIRClientProvider fhir={fhir}>
       <StoreProvider store={state} dispatch={dispatch}>
         <div>
@@ -92,6 +91,7 @@ export default function Home(props) {
   // </div>
   ) : 
   <div>
+    {console.log(state)}
     { state.patients ? state.patients.map((entry) => {
       return <li>{entry.resource.name[0].given + ' ' + entry.resource.name[0].family}</li>
     }) : ""}

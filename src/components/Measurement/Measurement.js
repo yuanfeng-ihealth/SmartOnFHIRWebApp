@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import seedMeasurements from '../../seeds/measurements';
+import measurements from '../../seeds/measurements';
 import moment from 'moment';
 import _ from 'lodash';
 import '../../App.scss'
@@ -15,7 +15,7 @@ import { Col, Table } from 'antd';
 const { Column, ColumnGroup } = Table;
 
 const Measurement = ({ store, loading, client, dispatch, encounter }) => {
-  const [measurements, setMeasurements] = useState(seedMeasurements);
+  // const [measurements, setMeasurements] = useState(seedMeasurements);
   const { patient, user } = store;
 
   useEffect(() => {
@@ -86,10 +86,10 @@ const Measurement = ({ store, loading, client, dispatch, encounter }) => {
       <div>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <BGTable measurements={measurements}/>
-          <BGSummary />
+          <BGSummary measurements={measurements}/>
         </div>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <BPTable />
+          <BPTable measurements={measurements}/>
           <BPSummary measurements={measurements}/>
         </div>
       </div>

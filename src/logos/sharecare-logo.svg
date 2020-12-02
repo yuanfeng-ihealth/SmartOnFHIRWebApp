@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+    <defs>
+        <style>
+            .cls-1{stroke:#e3e3e3;stroke-width:.5px;fill:url(#linear-gradient)}.cls-2{fill:url(#linear-gradient-2)}.cls-3{stroke:none}.cls-4{fill:none}
+        </style>
+        <linearGradient id="linear-gradient" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fafafa"/>
+            <stop offset="1" stop-color="#f0f0f0"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1=".13" x2=".954" y1=".5" y2=".5" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#48c9b2"/>
+            <stop offset=".9" stop-color="#3768bf"/>
+        </linearGradient>
+    </defs>
+    <g id="sharecare-logo" transform="translate(-858 -345)">
+        <g id="Rectangle_1135" class="cls-1" data-name="Rectangle 1135" transform="translate(858 345)">
+            <rect width="96" height="96" class="cls-3" rx="20"/>
+            <rect width="95.5" height="95.5" x=".25" y=".25" class="cls-4" rx="19.75"/>
+        </g>
+        <path id="Path_303" d="M59.408 4.857A15.69 15.69 0 0 0 48.239.225a15.676 15.676 0 0 0-11.16 4.623L35.928 6a13.011 13.011 0 0 0 .009 18.4l5.095 5.1a4.093 4.093 0 0 1 0 5.784l-6.264 6.264a4.093 4.093 0 0 1-5.838-.054L9.556 21.447a8.44 8.44 0 0 1 12-11.867l7.651 7.642a16.547 16.547 0 0 1-.127-2.013 15.969 15.969 0 0 1 1.478-6.754L26.6 4.495l-.009-.009A15.6 15.6 0 0 0 4.407 26.415l19.364 20.053a11.143 11.143 0 0 0 8 3.436h.1a11.149 11.149 0 0 0 7.95-3.3l6.264-6.264a11.26 11.26 0 0 0 0-15.91l-5.095-5.095a5.866 5.866 0 0 1 0-8.286l1.142-1.142a8.572 8.572 0 0 1 6.1-2.529 8.622 8.622 0 0 1 6.068 14.74l-3.867 3.862a12.572 12.572 0 0 1 1.6 8.513l1.767-1.768 5.566-5.5a15.78 15.78 0 0 0 .045-22.365z" class="cls-2" data-name="Path 303" transform="translate(873.969 370.022)"/>
+    </g>
+</svg>

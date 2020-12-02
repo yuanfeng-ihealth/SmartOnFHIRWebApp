@@ -10,8 +10,7 @@ import { getPatientObservations } from '../../utils/fhirExtract';
 import { Col, Table } from 'antd';
 const { Column, ColumnGroup } = Table;
 
-const BGTable = ({ store, loading, client, dispatch, encounter, measurements }) => {
-  console.log(measurements)
+const BGTable = ({ store, loading, client, dispatch, encounter, measurements = [] }) => {
   const filterB = (data) => {
     return _.filter(data, ['beforeMeal', true])
   }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import seedMeasurements from '../../seeds/measurements';
 import moment from 'moment';
 import _ from 'lodash';
 import '../../App.scss'

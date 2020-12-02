@@ -41,37 +41,42 @@ const reducer = (state, action) => {
   }
 }
 
-export default function Home(props) {
+export default function Home (props) {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
   const [fhir, setFhir] = useState(null);
-  const initState = {};
+  const initState = {
+    loggedIn: false
+  };
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
-    FhirLaunch()
+    console.log(props)
+    props.location.standaloneLaunch ? iHealthLaunch() : FhirLaunch()
   }, [])
 
   const FhirLaunch = () => {
-      FHIR.oauth2.ready().then((client) => {
-        setFhir(client);
-        setSearch(false);
-        getPatientRecord(client).then((records) => {
-          console.log(records)
-          client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
-          dispatch({type: "updateRecords", records})
-          dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
-          getPatients().then((d) => console.log(d.data))
-          setLoading(false)
-        })
-      }).catch(() => {
-          setSearch(true);
-          getPatients().then((bundle) =>{
-            console.log(bundle);
-            dispatch({type: "updatePatients", patients: bundle.data.entry});
-            setLoading(false)
-          })
+    FHIR.oauth2.ready().then((client) => {
+      setFhir(client);
+      setSearch(false);
+      getPatientRecord(client).then((records) => {
+        console.log(records)
+        client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
+        dispatch({type: "updateRecords", records})
+        dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
+        getPatients().then((d) => console.log(d.data));
+        setLoading(false);
       })
+    })
+  }
+
+  const iHealthLaunch = () => {
+    setSearch(true);
+    getPatients().then((bundle) => {
+      console.log(bundle);
+      dispatch({type: "updatePatients", patients: bundle.data.entry});
+      setLoading(false)
+    })
   }
 
   return !search ? (

@@ -173,3 +173,12 @@ export const makeBP = (data, ehr_id, encounter_id) => {
     ]
   }
 }
+
+export const parseBgSummary = (observations) => {
+    // const bgs = observations.filter((o) => )
+    console.log(observations);
+}
+
+export const parseBpSummary = (observations) => {
+    console.log(observations)
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import seedMeasurements from '../../seeds/measurements';
+// import measurements from '../../seeds/measurements';
 import moment from 'moment';
 import _ from 'lodash';
 import '../../App.scss'
@@ -10,7 +10,7 @@ import { getPatientObservations } from '../../utils/fhirExtract';
 import { Col, Table } from 'antd';
 const { Column, ColumnGroup } = Table;
 
-const BPTable = ({measurements}) => {
+const BPTable = ({ measurements = [] }) => {
   const renderMeasurement = (data) => {
     return data ? (
       <div>
@@ -24,10 +24,10 @@ const BPTable = ({measurements}) => {
   return (
     <Table 
       classname="logBookTable"
+      dataSource={measurements.filter((m) => m.type === "Blood Pressure")} 
       style={{marginBottom: '30px'} } 
       footer={ () => <span>Measurements are in mmHg</span>}
       title={() => <span style={{fontWeight: 'bold'}}>Blood Pressure</span>}
-      dataSource={seedMeasurements.filter((m) => m.type === "Blood Pressure")} 
       pagination={false}
     >
       <Column

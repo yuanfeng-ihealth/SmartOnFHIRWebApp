@@ -9,7 +9,7 @@ const LoginPage = (props) => {
   let history = useHistory();
 
   const login = () => {
-    history.push({pathname: '/app'})
+    history.push({pathname: '/app', standaloneLaunch: true})
   }
 
   return (

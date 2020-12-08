@@ -6,12 +6,16 @@ export const getLaunchOptions = (window) => {
   if (window.location.href.match('cerner')) {
     context.clientId = process.env.REACT_APP_CERNER_CLIENT_ID;
     context.scope = CERNER_SCOPES;
+    context.redirectUri = process.env.REACT_APP_REDIRECT_URI;
   }
   if (window.location.href.match('epic')) {
       context.clientId = process.env.REACT_APP_EPIC_CLIENT_ID;
       context.scope = EPIC_SCOPES;
+      context.redirectUri = process.env.REACT_APP_REDIRECT_URI;
   }
-
+  else {
+      context.redirectUri = 'http://localhost:3000/app'
+  }
   return context;
 };
 

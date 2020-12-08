@@ -5,7 +5,7 @@ local build(branch, name, image, when) = {
         'nodejs -v',
         'ls -lrth',
         'npm install',
-        'npm run build',
+        'CI=false npm run build',
     ],
     when: when
 };

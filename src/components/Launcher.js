@@ -1,37 +1,39 @@
 import React from "react";
-import { client, oauth2 as SMART } from "fhirclient";
-// import { CERNER_SCOPES, EPIC_SCOPES } from  "../utils/constants";
+import { oauth2 as SMART } from "fhirclient";
 import { getLaunchOptions } from '../utils/helper';
-
-/**
- * Typically the launch page is an empty page with a `SMART.authorize`
- * call in it.
- *
- * This example demonstrates that the call to authorize can be postponed
- * and called manually. In this case we use ReactRouter which will match
- * the `/launch` path and render our component. Then, after our page is
- * rendered we start the auth flow.
- */
+import '../App.scss'
 
 export default class Launcher extends React.Component {
-    /**
-     * This is configured to make a Standalone Launch, just in case it
-     * is loaded directly. An EHR can still launch it by passing `iss`
-     * and `launch` url parameters
-     */
-    componentDidMount() {
+    smartLaunch = () => {
         const launchOptions = getLaunchOptions(window);
         SMART.authorize({
             clientId: launchOptions.clientId,
             scope: launchOptions.scope,
-            // redirectUri: "http://localhost:3000/app"
-            redirectUri: process.env.REACT_APP_REDIRECT_URI
+            redirectUri: launchOptions.redirectUri
         });
     }
-    /**
-     * Could also return `null` for empty page
-     */
+
+    standaloneLaunch = () => {
+        this.props.history.push({pathname: '/app', standaloneLaunch: true})
+    }
+
+    redirectLogin = () => {
+        this.props.history.push({pathname: '/login', launch: window.location.href})
+    }
+
     render() {
-        return "Launching...";
+        return (
+            <div>
+                <div className="button" onClick={() => this.smartLaunch()}>
+                    Smart Launch
+                </div>
+                <div className="button" onClick={() => this.standaloneLaunch()}>
+                    iHealth Launch
+                </div>
+                <div className="button" onClick={() => this.redirectLogin()} >
+                    login
+                </div>
+            </div>
+        )
     }
 }

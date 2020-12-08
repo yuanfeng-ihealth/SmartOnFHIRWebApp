@@ -1,6 +1,7 @@
 import React, { FC, useMemo, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useStore } from '../StoreProvider';
+import _ from 'lodash';
 import api from '../../api';
 
 import classes from './PatientSnapshot.module.scss';
@@ -22,6 +23,13 @@ const PatientSnapshot = () => {
   console.log(patient)
   const name = useMemo(() => getPatientName(patient.name), [store]);
   const address = useMemo(() => getPatientAddress(patient.address), [store]);
+  const birthDate = _.get(store.patient, 'birthDate', "");
+  const gender = _.get(store.patient, 'gender', "");
+  const race = _.get(store.patient, 'extension[0].extension[1].valueString');
+  const ethnicity = _.get(store.patient, 'extension[1].extension[1].valueString');
+  const location = _.get(store.patient, 'address[0].postalCode', "");
+  
+
 
   const renderEnroll = () => {  
     const style = {marginLeft: '200px', borderRadius: '5px', background: '#6b8eb6', color: 'white', fontSize: '1em', fontFamily: 'Open Sans, sans-serif', fontWeight: 'bold', textTransform: 'uppercase'};
@@ -40,12 +48,12 @@ const PatientSnapshot = () => {
         <div className={classes['patient-name']}>{name}</div>
 
         <ul className={classes['patient-snapshot__list']}>
-          <li>DOB: {patient.birthDate}</li>
-          <li>Gender: {patient.gender}</li>
-          <li>Race: {patient.extension[0].extension[1].valueString}</li>
-          <li>Ethnicicty: {patient.extension[1].extension[1].valueString}</li>
-          <li>Address: {patient.address[0].line}</li>
-          <li>Location: {address} {patient.address[0].postalCode}</li>
+          <li>DOB: {birthDate}</li>
+          <li>Gender: {gender}</li>
+          <li>Race: {race}</li>
+          <li>Ethnicicty: {ethnicity}</li>
+          <li>Address: {address}</li>
+          <li>Location: {location}</li>
           {/* <li>Managing Org: {patient.managingOrganization.display}</li> */}
         </ul>
       </div>

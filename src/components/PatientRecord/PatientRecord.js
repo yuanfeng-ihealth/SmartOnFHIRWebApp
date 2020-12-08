@@ -17,13 +17,14 @@ import Measurement from '../Measurement';
 import { finished } from 'stream';
 
 const getResourceByType = ( patientRecord, resourceType ) => {
+  if (!patientRecord) {
+    return [];
+  }
   return patientRecord.filter(resource => resource.resourceType === resourceType);
 };
 
 const PatientRecord = ({ resources, loading, client }) => {
   const { store, dispatch } = useStore();
-  console.log(getResourceByType(store.records, 'Encounter'))
-  console.log(store.records)
   return (
     <div style={{display: 'flex'}}>
       <div style={{width: '100%'}}>

@@ -7,6 +7,9 @@ import { StoreProvider } from './StoreProvider';
 import PatientRecord from './PatientRecord';
 import Header from './Header';
 import Navigation from './Navigation'
+import Searchbar from './Searchbar';
+import { getPatient, createPatient, getAllMeasurements, getPatients } from '../api';
+import { Input } from 'antd';
 
 /**
  * Wraps everything into `FhirClientProvider` so that any component
@@ -16,63 +19,98 @@ import Navigation from './Navigation'
 const reducer = (state, action) => {
   switch (action.type) {
     case 'updatePatient':
+      console.log(action)
       return {...state, patient: action.patient};
+    case 'updatePatients':
+      return {...state, patients: action.patients};
     case 'updateUser': 
       return {...state, user: action.user};
     case 'updateRecords':
       console.log(action)
       return {...state, records: action.records};
+    case 'updateEnroll':
+      return {...state, enroll: action.enroll};
     case 'updateObservations':
       console.log(action)
       return {...state, observations: action.observations};
-    case 'updateEnroll':
-      return {...state, enroll: action.enroll};
-    case 'updateEncounter': 
-      return {...state, encounter: action.encounter}
+    case 'updateEncounters': 
+      return {...state, encounters: action.encounters}
+    case 'updateConditions':
+      return {...state, conditions: action.conditions}
+    case 'updateMedications':
+      return {...state, medications: action.medications}
     default: 
       return state
   }
 }
 
-export default function Home() {
-  // const [patientRecords, setPatientRecords] = useState([]);
+export default function Home (props) {
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(false);
   const [fhir, setFhir] = useState(null);
-  const initState = {};
+  const initState = {
+    loggedIn: false
+  };
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
-    FHIR.oauth2.ready().then((client) => {
-      window.fhir = client;
-      setFhir(client);
-      // dispatch({type: 'updateEncounter', encounter: client.encounter});
-      getPatientRecord(client).then((records) => {
-        // setPatientRecords(records);
-        console.log(records)
-        dispatch({type: "updateRecords", records})
-        dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
-        setLoading(false)
-        client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
-        // client.user.read().then((user) => dispatch({type: 'updateUser', user}))
-    })
-  })
+    props.location.standaloneLaunch ? iHealthLaunch() : FhirLaunch()
   }, [])
 
+  const loadPatientInfo = (client) => {
+    getPatientRecord(client).then((records) => {
+      console.log(records)
+      client.patient.read().then((patient) => dispatch({type: "updatePatient", patient}))
+      dispatch({type: "updateRecords", records})
+      dispatch({type: 'updateObservations', observations: records.filter((resource) => resource.resourceType === 'Observation')})
+      // getPatients().then((d) => console.log(d.data));
+    })
+  }
+
+  const FhirLaunch = () => {
+    FHIR.oauth2.ready().then((client) => {
+      setFhir(client);
+      setSearch(false);
+      loadPatientInfo(client);
+      setLoading(false);
+    })
+  }
+
+  const iHealthLaunch = () => {
+    console.log(props)
+    getPatients().then((bundle) => {
+      console.log(bundle);
+      dispatch({type: "updatePatients", patients: bundle.data.entry});
+      setSearch(true);
+      setLoading(false)
+    })
+  }
+
+  const renderPage = () => {
+    if (state.patient) {
+      console.log(state)
+      return (
+        <div>
+          <div>
+            <Header logo={logo} />
+            <Navigation resourcesLength={state.records && state.records.length}/>
+          </div>
+          <div>
+            <PatientRecord client={fhir} resources={state.records} loading={loading} dispatch={dispatch} />
+          </div>
+        </div>
+      )
+    } else if (state.patients) {
+      return <Searchbar store={state}/>
+      // return <div></div>
+    }
+  }
 
   return (
     <FHIRClientProvider fhir={fhir}>
       <StoreProvider store={state} dispatch={dispatch}>
-        <div>
-          <Header logo={logo} />
-          <Navigation resourcesLength={state.records && state.records.length}/>
-        </div>
-        <div>
-          <PatientRecord client={fhir} resources={state.records} loading={loading} dispatch={dispatch} />
-        </div>
+        {renderPage()}
     </StoreProvider>
   </FHIRClientProvider>
-  // <div>
-  //   HELLO
-  // </div>
-  );
+  )
 }

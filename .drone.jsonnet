@@ -2,9 +2,9 @@ local build(branch, name, image, when) = {
     name: name,
     image: image,
     commands: [
-        'apt update',
-        'apt install nodejs',
-        'apt install npm',
+        'apt update -y',
+        'apt install nodejs -y',
+        'apt install npm -y',
         'nodejs -v',
         'npm install',
         'npm run build',

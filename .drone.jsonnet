@@ -30,7 +30,7 @@ local pipeline(branch, instance) = {
     type: 'kubernetes',
     name: branch,
     steps: [
-        build(branch, "Build", "ubuntu:bionic", {instance: instance, event: ["push"]}),
+        build(branch, "Build", "node:erbium-alpine", {instance: instance, event: ["push"]}),
         deploy(branch, "Deploy", "ubuntu:bionic", {instance: instance, event: ["push"]})
     ],
     trigger:{

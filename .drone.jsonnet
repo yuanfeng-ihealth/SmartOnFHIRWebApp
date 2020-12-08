@@ -6,6 +6,7 @@ local build(branch, name, image, when) = {
         'apt install nodejs -y',
         'apt install npm -y',
         'nodejs -v',
+        'ls -lrth',
         'npm install',
         'npm run build',
     ],

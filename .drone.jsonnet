@@ -20,8 +20,6 @@ local build(branch, name, image, when) = {
     name: name,
     image: image,
     commands: [
-        'nodejs -v',
-        'ls -lrth',
         'npm install',
         'CI=false npm run build',
         'aws s3 sync ./build s3://smart-on-fhir',
@@ -43,7 +41,7 @@ local deploy(branch, name, image, when) = {
     image: image,
     pull: "always",
     commands:[
-        "aws s3 sync ./build s3://smart-on-fhir",
+        "aws s3 sync ./build s3://smart-on-fhir-" + branch,
     ],
     environment:{
         DOCKERHUB_USERNAME:{

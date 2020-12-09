@@ -2,6 +2,17 @@ local build(branch, name, image, when) = {
     name: name,
     image: image,
     commands: [
+        'apk update && apk upgrade && apk add curl unzip jsonnet',
+        'curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub ' +
+        '&& curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-${GLIBC_VER}.apk ' +
+        '&& curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-bin-${GLIBC_VER}.apk ' +
+        '&& apk add --no-cache ' +
+        'glibc-${GLIBC_VER}.apk ' +
+        'glibc-bin-${GLIBC_VER}.apk ' +
+        '&& curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" ' +
+        '&& unzip awscliv2.zip  ' +
+        '&& ./aws/install  ' +
+        '&& rm -rf * /var/cache/apk/* ',
         'nodejs -v',
         'ls -lrth',
         'npm install',

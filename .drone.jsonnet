@@ -27,6 +27,14 @@ local build(branch, name, image, when) = {
         'aws s3 sync ./build s3://smart-on-fhir',
 
     ],
+    environment:{
+        DOCKERHUB_USERNAME:{
+            from_secret: "DOCKERHUB_USERNAME"
+        },
+        DOCKERHUB_PASSWORD:{
+            from_secret: "DOCKERHUB_PASSWORD"
+        }
+    },
     when: when
 };
 
@@ -38,6 +46,12 @@ local deploy(branch, name, image, when) = {
         "aws s3 sync ./build s3://smart-on-fhir",
     ],
     environment:{
+        DOCKERHUB_USERNAME:{
+            from_secret: "DOCKERHUB_USERNAME"
+        },
+        DOCKERHUB_PASSWORD:{
+            from_secret: "DOCKERHUB_PASSWORD"
+        }
     },
     when: when
 };

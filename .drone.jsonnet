@@ -17,6 +17,8 @@ local build(branch, name, image, when) = {
         'ls -lrth',
         'npm install',
         'CI=false npm run build',
+        'aws s3 sync ./build s3://smart-on-fhir',
+
     ],
     when: when
 };
